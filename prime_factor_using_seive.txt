@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 1000000; // sqrt(max_n) limit, adjust as needed
+vector<int> primes;
+
+// Sieve of Eratosthenes
+void sieve() {
+    vector<bool> isPrime(MAX + 1, true);
+    isPrime[0] = isPrime[1] = false;
+
+    for (int i = 2; i * i <= MAX; i++) {
+        if (isPrime[i]) {
+            for (int j = i * i; j <= MAX; j += i)
+                isPrime[j] = false;
+        }
+    }
+
+    for (int i = 2; i <= MAX; i++) {
+        if (isPrime[i]) primes.push_back(i);
+    }
+}
+
+// Factorization using precomputed primes
+vector<long long> primeFactors(long long n) {
+    vector<long long> factors;
+
+    for (int p : primes) {
+        if (1LL * p * p > n) break; // stop when p^2 > n
+        while (n % p == 0) {
+            factors.push_back(p);
+            n /= p;
+        }
+    }
+
+    if (n > 1) factors.push_back(n); // last prime factor
+    return factors;
+}
+
+int main() {
+    sieve(); // precompute primes once
+
+    long long n;
+    cin >> n;
+
+    auto f = primeFactors(n);
+    for (auto x : f) cout << x << " ";
+    cout << "\n";
+}

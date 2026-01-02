@@ -1,0 +1,14 @@
+
+const int N = 100000000; // 1e8
+bitset<N+1> is_prime;
+
+void sieve() {
+    is_prime.set();        // set all bits to 1
+    is_prime[0] = is_prime[1] = 0;
+    for (int p = 2; 1LL * p * p <= N; p++) {
+        if (is_prime[p]) {
+            for (long long m = 1LL * p * p; m <= N; m += p)
+                is_prime[m] = 0;
+        }
+    }
+}
